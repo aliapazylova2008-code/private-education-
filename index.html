@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🎓 Частное образование · Ош</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #fff5e6 0%, #fff0d4 100%);
+            color: #1a2c3e;
+            padding: 20px;
+        }
+        .app-container { max-width: 1300px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(105deg, #1a6e5e 0%, #1a5a4e 100%);
+            border-radius: 28px;
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header h1 i { color: #e8a72b; font-size: 28px; }
+        .subhead {
+            font-size: 14px;
+            color: #cde3de;
+            margin-top: 8px;
+        }
+        .stats {
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+            margin-top: 16px;
+        }
+        .filters-bar {
+            background: white;
+            border-radius: 60px;
+            padding: 12px 24px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .filter-chip {
+            background: #f0f2f5;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+        .filter-chip i { font-size: 13px; color: #2c7a4d; }
+        .filter-chip.active { background: #2c7a4d; color: white; }
+        .filter-chip.active i { color: white; }
+        .partner-filter-btn {
+            background: #f0f2f5;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+        .partner-filter-btn.active { background: #2c7a4d; color: white; border-color: #2c7a4d; }
+        .table-wrapper {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+        .places-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 1000px;
+        }
+        .places-table th {
+            text-align: left;
+            padding: 16px 12px;
+            background: #f8fafc;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .places-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+        }
+        .partner-checkbox { transform: scale(1.2); cursor: pointer; width: 18px; height: 18px; accent-color: #2c7a4d; }
+        .rating-stars { color: #f5b042; letter-spacing: 2px; font-size: 12px; }
+        .badge-top { background: #2c7a4d; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; margin-left: 6px; }
+        .badge-private { background: #e2e8f0; color: #1a2c3e; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; margin-left: 6px; }
+        .gis-link { color: #2c7a4d; text-decoration: none; font-weight: 500; white-space: nowrap; }
+        .gis-link i { font-size: 12px; margin-right: 4px; }
+        @media (max-width: 700px) {
+            body { padding: 12px; }
+            .header { padding: 18px; }
+            .header h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <h1><i class="fas fa-graduation-cap"></i> Частное образование · Ош</h1>
+        <div class="subhead">Частные школы, лицеи, курсы, детсады и образовательные центры</div>
+        <div class="stats" id="stats-count">Загрузка...</div>
+    </div>
+
+    <div class="filters-bar">
+        <div class="filter-chip" data-type="all"><i class="fas fa-list"></i> Все</div>
+        <div class="filter-chip" data-type="Частные школы"><i class="fas fa-school"></i> Частные школы</div>
+        <div class="filter-chip" data-type="Лицеи"><i class="fas fa-trophy"></i> Лицеи</div>
+        <div class="filter-chip" data-type="Курсы"><i class="fas fa-language"></i> Курсы</div>
+        <div class="filter-chip" data-type="Детские сады"><i class="fas fa-child"></i> Детские сады</div>
+        <div class="filter-chip" data-type="Образовательные центры"><i class="fas fa-chalkboard-user"></i> Образовательные центры</div>
+        <button id="partner-filter-btn" class="partner-filter-btn"><i class="fas fa-handshake"></i> Показать партнёров</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="places-table">
+            <thead>
+                <tr><th>#</th><th>🤝</th><th>Название</th><th>Тип</th><th>Рейтинг</th><th>Отзывы</th><th>Статус</th><th>Специализация</th><th>Адрес</th><th>Телефон</th><th>2ГИС</th></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const institutions = [
+        { name: "Международная школа «Манас»", type: "Частные школы", rating: 4.8, reviews: 178, status: "⭐ Топ", specialization: "Международный бакалавриат", address: "ул. Алышера Навои, 88", phone: "+996 (700) 880-088", gis: "https://2gis.kg/search/Международная школа Манас Ош" },
+        { name: "Частная школа «Академия Успеха»", type: "Частные школы", rating: 4.6, reviews: 134, status: "⭐ Топ", specialization: "Углублённое изучение", address: "ул. Горького, 66", phone: "+996 (555) 660-066", gis: "https://2gis.kg/search/Академия Успеха Ош" },
+        { name: "Школа «Эврика»", type: "Частные школы", rating: 4.5, reviews: 112, status: "⭐ Топ", specialization: "STEAM", address: "пр. Масалиева, 44", phone: "+996 (700) 440-044", gis: "https://2gis.kg/search/Эврика Ош" },
+        { name: "Частная школа «Нур»", type: "Частные школы", rating: 4.4, reviews: 98, status: "🏢 Частная", specialization: "Классическая", address: "ул. Курманжан-Датки, 88", phone: "+996 (700) 880-008", gis: "https://2gis.kg/search/Нур Ош" },
+        { name: "Школа «Интеллект»", type: "Частные школы", rating: 4.5, reviews: 121, status: "⭐ Топ", specialization: "Математика и IT", address: "ул. Токтогула, 45", phone: "+996 (555) 450-045", gis: "https://2gis.kg/search/Интеллект Ош" },
+        { name: "Частная школа «Болочок»", type: "Частные школы", rating: 4.3, reviews: 87, status: "🏢 Частная", specialization: "Гуманитарная", address: "ул. Алымбека Датка, 120", phone: "—", gis: "https://2gis.kg/search/Болочок Ош" },
+        { name: "Школа «Байтерек»", type: "Частные школы", rating: 4.4, reviews: 103, status: "🏢 Частная", specialization: "Языковая", address: "ул. Рысбая Абдыкадырова, 60", phone: "+996 (700) 600-060", gis: "https://2gis.kg/search/Байтерек Ош" },
+        { name: "Частная школа «Умут»", type: "Частные школы", rating: 4.2, reviews: 76, status: "🏢 Частная", specialization: "Классическая", address: "ул. Советской, 55", phone: "—", gis: "https://2gis.kg/search/Умут Ош" },
+        { name: "Школа «Жулдуз»", type: "Частные школы", rating: 4.3, reviews: 91, status: "🏢 Частная", specialization: "Творческая", address: "мкр. Авиагородок, 15", phone: "+996 (770) 150-015", gis: "https://2gis.kg/search/Жулдуз Ош" },
+        { name: "Частная школа «Мурас»", type: "Частные школы", rating: 4.1, reviews: 65, status: "🏢 Частная", specialization: "Национальная", address: "ул. Горького, 102", phone: "—", gis: "https://2gis.kg/search/Мурас Ош" },
+        { name: "Школа «Кенен»", type: "Частные школы", rating: 4.4, reviews: 110, status: "🏢 Частная", specialization: "Акцент на науку", address: "пр. Масалиева, 77", phone: "+996 (700) 770-077", gis: "https://2gis.kg/search/Кенен Ош" },
+        { name: "Частная школа «Алтын»", type: "Частные школы", rating: 4.3, reviews: 94, status: "🏢 Частная", specialization: "Языковая", address: "ул. Токтогула, 88", phone: "—", gis: "https://2gis.kg/search/Алтын Ош" },
+        { name: "Школа «Ынтымак»", type: "Частные школы", rating: 4.0, reviews: 54, status: "🏢 Частная", specialization: "Спортивная", address: "мкр. Кулатова, 8", phone: "—", gis: "https://2gis.kg/search/Ынтымак Ош" },
+        { name: "Частная школа «Манаскер»", type: "Частные школы", rating: 4.5, reviews: 118, status: "⭐ Топ", specialization: "Кыргызская литература", address: "ул. Алышера Навои, 155", phone: "+996 (555) 155-015", gis: "https://2gis.kg/search/Манаскер Ош" },
+        { name: "Школа «Академия»", type: "Частные школы", rating: 4.4, reviews: 97, status: "🏢 Частная", specialization: "Подготовка к вузам", address: "ул. Насирдина Исанова, 30", phone: "+996 (700) 300-003", gis: "https://2gis.kg/search/Академия Ош" },
+        { name: "Частная школа «Кыргыз-Тили»", type: "Частные школы", rating: 4.2, reviews: 71, status: "🏢 Частная", specialization: "Кыргызский язык", address: "ул. Курманжан-Датки, 200", phone: "—", gis: "https://2gis.kg/search/Кыргыз-Тили Ош" },
+        { name: "Лицей «Жаш Уран»", type: "Лицеи", rating: 4.7, reviews: 222, status: "⭐ Топ", specialization: "Физика-математика", address: "ул. Масалиева, 100", phone: "+996 (700) 100-001", gis: "https://2gis.kg/search/Жаш Уран Ош" },
+        { name: "Физико-математический лицей «Ньютон»", type: "Лицеи", rating: 4.6, reviews: 189, status: "⭐ Топ", specialization: "Математика", address: "ул. Горького, 48", phone: "+996 (555) 480-048", gis: "https://2gis.kg/search/Ньютон Ош" },
+        { name: "Лицей «Алтын Уя»", type: "Лицеи", rating: 4.5, reviews: 156, status: "⭐ Топ", specialization: "Экономика", address: "ул. Алышера Навои, 220", phone: "+996 (700) 220-022", gis: "https://2gis.kg/search/Алтын Уя Ош" },
+        { name: "Лицей «Жайыл»", type: "Лицеи", rating: 4.4, reviews: 134, status: "🏢 Частная", specialization: "История и право", address: "ул. Рысбая Абдыкадырова, 140", phone: "—", gis: "https://2gis.kg/search/Жайыл Ош" },
+        { name: "Технический лицей «Инноватор»", type: "Лицеи", rating: 4.5, reviews: 167, status: "⭐ Топ", specialization: "Инженерия и IT", address: "ул. Токтогула, 98", phone: "+996 (700) 980-098", gis: "https://2gis.kg/search/Инноватор Ош" },
+        { name: "Языковой лицей «Манас»", type: "Лицеи", rating: 4.3, reviews: 112, status: "🏢 Частная", specialization: "Иностранные языки", address: "ул. Советской, 100", phone: "—", gis: "https://2gis.kg/search/Языковой лицей Манас Ош" },
+        { name: "Лицей «Профиль»", type: "Лицеи", rating: 4.2, reviews: 89, status: "🏢 Частная", specialization: "Профильное обучение", address: "пр. Масалиева, 120", phone: "—", gis: "https://2gis.kg/search/Профиль Ош" },
+        { name: "Лицей «Акыл»", type: "Лицеи", rating: 4.4, reviews: 125, status: "🏢 Частная", specialization: "Логика и математика", address: "ул. Курманжан-Датки, 260", phone: "+996 (555) 260-026", gis: "https://2gis.kg/search/Акыл Ош" },
+        { name: "Лицей «Ош-Старт»", type: "Лицеи", rating: 4.1, reviews: 78, status: "🏢 Частная", specialization: "Предпринимательство", address: "мкр. Анар, 22", phone: "—", gis: "https://2gis.kg/search/Ош-Старт" },
+        { name: "Курсы английского «British House»", type: "Курсы", rating: 4.7, reviews: 89, status: "⭐ Топ", specialization: "Английский язык", address: "ул. Ленина, 88", phone: "+996 (550) 880-088", gis: "https://2gis.kg/search/British House Ош" },
+        { name: "Курсы «Полиглот»", type: "Курсы", rating: 4.5, reviews: 67, status: "🏢 Частная", specialization: "Испанский, немецкий", address: "ул. Кирова, 120", phone: "+996 (700) 120-012", gis: "https://2gis.kg/search/Полиглот Ош" },
+        { name: "Образовательный центр «STEM Osh»", type: "Образовательные центры", rating: 4.8, reviews: 112, status: "⭐ Топ", specialization: "Робототехника", address: "ул. Курманжан-Датка, 50", phone: "+996 (700) 500-050", gis: "https://2gis.kg/search/STEM Osh" },
+        { name: "Детский сад «Балапан»", type: "Детские сады", rating: 4.5, reviews: 203, status: "⭐ Топ", specialization: "Развитие речи", address: "ул. Алышера Навои, 12", phone: "+996 (555) 120-012", gis: "https://2gis.kg/search/Балапан Ош" },
+        { name: "Детский сад «Ак-Босого»", type: "Детские сады", rating: 4.3, reviews: 156, status: "🏢 Частная", specialization: "Монтессори", address: "ул. Горького, 200", phone: "+996 (700) 200-020", gis: "https://2gis.kg/search/Ак-Босого Ош" },
+        { name: "Образовательный центр «Smart Kids»", type: "Образовательные центры", rating: 4.6, reviews: 78, status: "⭐ Топ", specialization: "Ментальная арифметика", address: "пр. Масалиева, 15", phone: "+996 (700) 150-015", gis: "https://2gis.kg/search/Smart Kids Ош" },
+        { name: "Курсы «IELTS Osh»", type: "Курсы", rating: 4.7, reviews: 145, status: "⭐ Топ", specialization: "Подготовка к IELTS", address: "ул. Токтогула, 110", phone: "+996 (700) 110-011", gis: "https://2gis.kg/search/IELTS Osh" },
+        { name: "Частная школа «Доор»", type: "Частные школы", rating: 4.2, reviews: 67, status: "🏢 Частная", specialization: "Классическая", address: "ул. Бекназарова, 45", phone: "—", gis: "https://2gis.kg/search/Доор Ош" },
+        { name: "Лицей «Билим»", type: "Лицеи", rating: 4.4, reviews: 102, status: "🏢 Частная", specialization: "Гуманитарный", address: "ул. Исанова, 33", phone: "+996 (700) 330-033", gis: "https://2gis.kg/search/Билим Ош" },
+        { name: "Курсы «Код будущего»", type: "Курсы", rating: 4.6, reviews: 87, status: "⭐ Топ", specialization: "Программирование для детей", address: "ул. Абдрахманова, 77", phone: "+996 (700) 770-770", gis: "https://2gis.kg/search/Код будущего Ош" },
+        { name: "Детский сад «Нур»", type: "Детские сады", rating: 4.4, reviews: 134, status: "🏢 Частная", specialization: "Английский с пелёнок", address: "ул. Московская, 44", phone: "+996 (555) 440-044", gis: "https://2gis.kg/search/Детский сад Нур Ош" },
+        { name: "Образовательный центр «Эрудит»", type: "Образовательные центры", rating: 4.5, reviews: 92, status: "⭐ Топ", specialization: "Подготовка к школе", address: "ул. Советская, 111", phone: "+996 (700) 111-111", gis: "https://2gis.kg/search/Эрудит Ош" },
+        { name: "Частная школа «Олимп»", type: "Частные школы", rating: 4.3, reviews: 82, status: "🏢 Частная", specialization: "Спортивная", address: "ул. Раимбекова, 99", phone: "—", gis: "https://2gis.kg/search/Олимп Ош" },
+        { name: "Лицей «Синергия»", type: "Лицеи", rating: 4.5, reviews: 143, status: "⭐ Топ", specialization: "Бизнес и экономика", address: "ул. Супаналиева, 22", phone: "+996 (700) 220-022", gis: "https://2gis.kg/search/Синергия Ош" },
+        { name: "Курсы «RobotON»", type: "Курсы", rating: 4.8, reviews: 67, status: "⭐ Топ", specialization: "Робототехника", address: "ул. Токтоналиева, 8", phone: "+996 (700) 800-800", gis: "https://2gis.kg/search/RobotON Ош" },
+        { name: "Детский сад «Айжан»", type: "Детские сады", rating: 4.3, reviews: 121, status: "🏢 Частная", specialization: "Эстетическое воспитание", address: "ул. Шакирова, 66", phone: "+996 (555) 660-066", gis: "https://2gis.kg/search/Айжан Ош" },
+        { name: "Образовательный центр «Академия Знаний»", type: "Образовательные центры", rating: 4.6, reviews: 103, status: "⭐ Топ", specialization: "Репетиторство", address: "ул. Эшмамбетова, 17", phone: "+996 (700) 170-017", gis: "https://2gis.kg/search/Академия Знаний Ош" },
+        { name: "Частная школа «Жаны Муун»", type: "Частные школы", rating: 4.2, reviews: 73, status: "🏢 Частная", specialization: "Современные технологии", address: "ул. Курманжан-Датка, 333", phone: "—", gis: "https://2gis.kg/search/Жаны Муун Ош" },
+        { name: "Лицей «Манас-Ата»", type: "Лицеи", rating: 4.4, reviews: 115, status: "🏢 Частная", specialization: "История и культура", address: "ул. Асанбая, 44", phone: "+996 (700) 440-044", gis: "https://2gis.kg/search/Манас-Ата Ош" },
+        { name: "Курсы «Speak Up»", type: "Курсы", rating: 4.5, reviews: 56, status: "🏢 Частная", specialization: "Разговорный английский", address: "ул. Жукеева-Пудовкина, 12", phone: "+996 (555) 120-012", gis: "https://2gis.kg/search/Speak Up Ош" },
+        { name: "Детский сад «Кубаныч»", type: "Детские сады", rating: 4.2, reviews: 98, status: "🏢 Частная", specialization: "Логопедия", address: "ул. Интергельпо, 19", phone: "—", gis: "https://2gis.kg/search/Кубаныч Ош" },
+        { name: "Образовательный центр «Гений»", type: "Образовательные центры", rating: 4.4, reviews: 77, status: "🏢 Частная", specialization: "Скорочтение", address: "ул. Тыныстанова, 55", phone: "+996 (700) 550-055", gis: "https://2gis.kg/search/Гений Ош" },
+        { name: "Частная школа «Тарбия»", type: "Частные школы", rating: 4.1, reviews: 62, status: "🏢 Частная", specialization: "Воспитание", address: "ул. Бекназарова, 200", phone: "—", gis: "https://2gis.kg/search/Тарбия Ош" },
+        { name: "Лицей «Интеллектуал»", type: "Лицеи", rating: 4.6, reviews: 167, status: "⭐ Топ", specialization: "Олимпиадная подготовка", address: "ул. Камбаралы, 11", phone: "+996 (700) 110-011", gis: "https://2gis.kg/search/Интеллектуал Ош" },
+        { name: "Курсы «Арт-Студия»", type: "Курсы", rating: 4.3, reviews: 48, status: "🏢 Частная", specialization: "Рисование и дизайн", address: "ул. Масалиева, 200", phone: "+996 (555) 200-020", gis: "https://2gis.kg/search/Арт-Студия Ош" },
+        { name: "Детский сад «Күн»", type: "Детские сады", rating: 4.5, reviews: 176, status: "⭐ Топ", specialization: "Солнечные дети", address: "ул. Монуева, 77", phone: "+996 (700) 770-077", gis: "https://2gis.kg/search/Күн Ош" },
+        { name: "Образовательный центр «Логос»", type: "Образовательные центры", rating: 4.4, reviews: 68, status: "🏢 Частная", specialization: "Логика и риторика", address: "ул. Нуркамалова, 33", phone: "—", gis: "https://2gis.kg/search/Логос Ош" },
+        { name: "Частная школа «Ыйман»", type: "Частные школы", rating: 4.3, reviews: 88, status: "🏢 Частная", specialization: "Духовное развитие", address: "ул. Орозбекова, 49", phone: "+996 (700) 490-049", gis: "https://2gis.kg/search/Ыйман Ош" },
+        { name: "Лицей «Технолог»", type: "Лицеи", rating: 4.5, reviews: 131, status: "⭐ Топ", specialization: "Информатика и IT", address: "ул. Раимбекова, 200", phone: "+996 (555) 200-200", gis: "https://2gis.kg/search/Технолог Ош" },
+        { name: "Курсы «Медиа-школа»", type: "Курсы", rating: 4.4, reviews: 53, status: "🏢 Частная", specialization: "Журналистика", address: "ул. Садырбаева, 22", phone: "+996 (700) 220-022", gis: "https://2gis.kg/search/Медиа-школа Ош" },
+        { name: "Детский сад «Солнышко»", type: "Детские сады", rating: 4.3, reviews: 112, status: "🏢 Частная", specialization: "Творчество", address: "ул. Супаналиева, 18", phone: "—", gis: "https://2gis.kg/search/Солнышко Ош" },
+        { name: "Образовательный центр «Пифагор»", type: "Образовательные центры", rating: 4.6, reviews: 95, status: "⭐ Топ", specialization: "Математика", address: "ул. Токтоналиева, 44", phone: "+996 (700) 440-044", gis: "https://2gis.kg/search/Пифагор Ош" },
+        { name: "Частная школа «Айкол»", type: "Частные школы", rating: 4.2, reviews: 71, status: "🏢 Частная", specialization: "Гармоничное развитие", address: "ул. Шакирова, 100", phone: "—", gis: "https://2gis.kg/search/Айкол Ош" },
+        { name: "Лицей «Истоки»", type: "Лицеи", rating: 4.4, reviews: 108, status: "🏢 Частная", specialization: "Русская литература", address: "ул. Эшмамбетова, 12", phone: "+996 (555) 120-012", gis: "https://2gis.kg/search/Истоки Ош" },
+        { name: "Курсы «Гитара Ош»", type: "Курсы", rating: 4.5, reviews: 42, status: "🏢 Частная", specialization: "Музыка", address: "ул. Асанбая, 89", phone: "+996 (700) 890-089", gis: "https://2gis.kg/search/Гитара Ош" },
+        { name: "Детский сад «Эркин»", type: "Детские сады", rating: 4.4, reviews: 145, status: "🏢 Частная", specialization: "Свободное развитие", address: "ул. Абдрахманова, 34", phone: "—", gis: "https://2gis.kg/search/Эркин Ош" },
+        { name: "Образовательный центр «Старт»", type: "Образовательные центры", rating: 4.3, reviews: 61, status: "🏢 Частная", specialization: "Профориентация", address: "ул. Жукеева-Пудовкина, 66", phone: "+996 (700) 660-066", gis: "https://2gis.kg/search/Старт Ош" }
+    ];
+
+    let partnerFilter = false;
+    let currentType = "all";
+
+    function savePartners() {
+        const partners = {};
+        document.querySelectorAll('.partner-checkbox').forEach(cb => {
+            partners[cb.dataset.name] = cb.checked;
+        });
+        localStorage.setItem('edu_partners', JSON.stringify(partners));
+    }
+
+    function loadPartners() {
+        const saved = localStorage.getItem('edu_partners');
+        if (saved) {
+            const partners = JSON.parse(saved);
+            document.querySelectorAll('.partner-checkbox').forEach(cb => {
+                if (partners[cb.dataset.name]) cb.checked = true;
+            });
+        }
+    }
+
+    function renderStars(rating) {
+        const full = Math.floor(rating);
+        let stars = '';
+        for (let i = 0; i < full; i++) stars += '★';
+        for (let i = stars.length; i < 5; i++) stars += '☆';
+        return stars;
+    }
+
+    function renderTable() {
+        let filtered = institutions.filter(inst => {
+            if (currentType !== "all" && inst.type !== currentType) return false;
+            if (partnerFilter) {
+                const saved = localStorage.getItem('edu_partners');
+                if (saved) {
+                    const partners = JSON.parse(saved);
+                    if (!partners[inst.name]) return false;
+                } else return false;
+            }
+            return true;
+        });
+
+        document.getElementById('stats-count').innerHTML = `🎓 Найдено: ${filtered.length} учреждений`;
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = filtered.map((inst, idx) => `
+            <tr>
+                <td>${idx+1}</td>
+                <td style="text-align:center"><input type="checkbox" class="partner-checkbox" data-name="${inst.name}" ${localStorage.getItem('edu_partners') && JSON.parse(localStorage.getItem('edu_partners'))[inst.name] ? 'checked' : ''}></td>
+                <td><strong>${inst.name}</strong>${inst.status === "⭐ Топ" ? '<span class="badge-top">⭐ Топ</span>' : '<span class="badge-private">🏢 Частная</span>'}</td>
+                <td>${inst.type}</td>
+                <td><span class="rating-stars">${renderStars(inst.rating)}</span> ${inst.rating}</td>
+                <td>${inst.reviews}</td>
+                <td>${inst.status}</td>
+                <td>${inst.specialization}</td>
+                <td class="address">${inst.address}</td>
+                <td>${inst.phone}</td>
+                <td><a href="${inst.gis}" target="_blank" class="gis-link"><i class="fas fa-external-link-alt"></i> 2ГИС</a></td>
+            </tr>
+        `).join('');
+
+        document.querySelectorAll('.partner-checkbox').forEach(cb => {
+            cb.addEventListener('change', () => { savePartners(); if(partnerFilter) renderTable(); });
+        });
+    }
+
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            currentType = chip.dataset.type;
+            renderTable();
+        });
+    });
+
+    document.getElementById('partner-filter-btn').addEventListener('click', () => {
+        partnerFilter = !partnerFilter;
+        document.getElementById('partner-filter-btn').classList.toggle('active', partnerFilter);
+        renderTable();
+    });
+
+    renderTable();
+    loadPartners();
+</script>
+</body>
+</html>
